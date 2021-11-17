@@ -1,0 +1,60 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ cmake-alignment ]
+  pull_request:
+    branches: [ cmake-alignment ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: mkdir build && cd build && cmake ../src
+    - name: build
+      run: cmake --build build
+
+  valgrind:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: mkdir build && cd build && cmake ../src
+    - name: build
+      run: cd build && make && sudo apt-get install valgrind
+    - name: run
+      run: valgrind -v /home/runner/work/sudoku-solver/sudoku-solver/build/sudoku_solver
+
+  build_ut:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Install gtest manually
+        run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make && cd /usr/src/gtest/lib && sudo cp *.a /usr/lib && sudo ln -s /usr/lib/libgtest.a /usr/local/lib/libgtest.a && sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/libgtest_main.a
+      - uses: actions/checkout@v1
+      - name: configure
+        run: mkdir build && cd build && cmake ../tests
+      - name: make
+        run: cd build && make
+      - name: Run Test
+        run: /home/runner/work/sudoku-solver/sudoku-solver/build/sudoku_solver_test
+        
+  valgrind_ut:
+    runs-on: ubuntu-latest
+    
+    steps: 
+    - uses: actions/checkout@v2
+    - name: Install gtest manually
+      run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make && cd /usr/src/gtest/lib && sudo cp *.a /usr/lib && sudo ln -s /usr/lib/libgtest.a /usr/local/lib/libgtest.a && sudo ln -s /usr/lib/libgtest_main.a /usr/local/lib/libgtest_main.a
+    - uses: actions/checkout@v1
+    - name: configure 
+      run: mkdir build && cd build && cmake ../tests && sudo apt-get install valgrind
+    - name: build
+      run: cd build && make
+    - name: run ut_valgrind
+      run: valgrind -v /home/runner/work/sudoku-solver/sudoku-solver/build/sudoku_solver_test
