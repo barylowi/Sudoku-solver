@@ -2,9 +2,9 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ cmake-alignment ]
+    branches: [ master ]
   pull_request:
-    branches: [ cmake-alignment ]
+    branches: [ master ]
 
 jobs:
   build:
