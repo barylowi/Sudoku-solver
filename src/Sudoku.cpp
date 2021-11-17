@@ -1,7 +1,7 @@
 /*
  * Created by: Milosz Barylowicz
  * Date:       17/11/2021
-*/
+ */
 
 #include "../libs/Sudoku.hpp"
 #include <tuple>
