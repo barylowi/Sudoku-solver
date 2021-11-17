@@ -1,2 +1,2 @@
-# sudoku-solver
-Simple implementatnion of backtracking algorithm to sole sudoku boards
+# Sudoku-solver
+Simple implementatnion of backtracking algorithm to solve sudoku boards
